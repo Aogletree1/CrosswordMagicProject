@@ -159,6 +159,20 @@ public class PuzzleDatabaseModel extends SQLiteOpenHelper {
 
     }
 
+    public int addGuess(SQLiteDatabase db, HashMap<String, String> params){
+
+        String puzzleid = "puzzleid";
+        String wordid = "wordid";
+
+        ContentValues values = new ContentValues();
+        values.put(puzzleid, params.get(puzzleid));
+        values.put(wordid, params.get(wordid));
+
+
+        int key = (int)db.insert(context.getString(R.string.sql_table_guesses), null, values);
+        return key;
+    }
+
     public int addWord(SQLiteDatabase db, HashMap<String, String> params) {
 
         String puzzleid = context.getString(R.string.sql_field_puzzleid);
@@ -227,8 +241,6 @@ public class PuzzleDatabaseModel extends SQLiteOpenHelper {
 
                 do {
 
-                    HashMap<String, String> paramw = new HashMap<>();
-
                     params.put(context.getString(R.string.sql_field_id), String.valueOf(cursor.getInt(0)));
                     params.put(context.getString(R.string.sql_field_puzzleid), String.valueOf(cursor.getInt(1)));
                     params.put(context.getString(R.string.sql_field_row), String.valueOf(cursor.getInt(2)));
@@ -241,12 +253,36 @@ public class PuzzleDatabaseModel extends SQLiteOpenHelper {
                     word = new Word(params);
                     puzzle.addWord(word);
 
+
                 }
                 while (cursor.moveToNext());
 
                 cursor.close();
 
-            }
+                try {
+                    query = context.getString(R.string.sql_get_guesses);
+                    cursor = db.rawQuery(query, new String[]{String.valueOf(id)});
+                    if (cursor.moveToFirst()) {
+
+                        cursor.moveToFirst();
+
+                        do {
+
+                            params.put(context.getString(R.string.sql_field_puzzleid), String.valueOf(cursor.getInt(0)));
+                            params.put(context.getString(R.string.sql_field_wordid), String.valueOf(cursor.getInt(1)));
+
+
+                            String guesses = String.valueOf(new Word(params));
+                            puzzle.addWordToGrid(guesses);
+
+
+                        } while (cursor.moveToNext());
+
+                        cursor.close();
+
+                }
+
+            } catch (Exception e){e.printStackTrace();}
 
         }
 
@@ -254,8 +290,10 @@ public class PuzzleDatabaseModel extends SQLiteOpenHelper {
 
         // return fully initialized Puzzle object
 
-        return puzzle;
 
     }
 
+
+        return puzzle;
+    }
 }

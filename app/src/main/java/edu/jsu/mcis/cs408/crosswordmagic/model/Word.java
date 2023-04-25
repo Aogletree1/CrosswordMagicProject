@@ -1,5 +1,7 @@
 package edu.jsu.mcis.cs408.crosswordmagic.model;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.HashMap;
 
 public class Word {
@@ -37,11 +39,11 @@ public class Word {
         return direction.equals(WordDirection.DOWN);
     }
 
-    public Integer getId() {
+    public HashMap<String, String> getId() {
         return id;
     }
 
-    public Integer getPuzzleid() {
+    public SQLiteDatabase getPuzzleid() {
         return puzzleid;
     }
 

@@ -98,6 +98,7 @@ public class Puzzle {
     public Word guess(Integer num, String guess) {
 
         Word result = null;
+        Word word = null;
 
         /* create keys for across/down word(s) at specified box number */
 
@@ -106,33 +107,24 @@ public class Puzzle {
 
         /* get word(s) from collection (will return null for non-existent words!) */
 
-        /*
+        try{
+            word = words.get(num);
 
+        } catch(Exception e){ e.printStackTrace();}
 
-        INSERT YOUR CODE HERE
-
-
-         */
 
         /* compare guess to word(s); if it matches, and if it has not already been solved, assign word to "result" and call "addWordToGrid()" */
 
-        /*
-
-
-        INSERT YOUR CODE HERE
-
-
-         */
+            if (guess.equals(word)) {
+                result.getWord(word);
+                addWordToGrid(guess);
+            }
 
         /* check if any blank cells remain in "letters"; if not, the puzzle is solved, so set "solved" to true */
 
-        /*
-
-
-        INSERT YOUR CODE HERE
-
-
-         */
+            if (letters.equals(null)){
+                solved = true;
+            }
 
         /* return reference to guessed word (so it can be added to the database) */
 
@@ -150,13 +142,16 @@ public class Puzzle {
 
         /* get word properties and add letters to "leters" array */
 
-        /*
+        int row = w.getRow();
+        int column = w.getColumn();
+        int length = w.getWord().length();
+
+        for (int i = 0; i < length; ++i) {
+
+            letters[row][column] = key;
 
 
-        INSERT YOUR CODE HERE
-
-
-         */
+        }
 
     }
 
