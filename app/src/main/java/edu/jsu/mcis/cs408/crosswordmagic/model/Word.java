@@ -39,11 +39,11 @@ public class Word {
         return direction.equals(WordDirection.DOWN);
     }
 
-    public HashMap<String, String> getId() {
+    public int getId() {
         return id;
     }
 
-    public SQLiteDatabase getPuzzleid() {
+    public int getPuzzleid() {
         return puzzleid;
     }
 

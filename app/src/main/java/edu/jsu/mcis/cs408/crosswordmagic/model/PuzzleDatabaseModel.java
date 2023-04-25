@@ -159,18 +159,16 @@ public class PuzzleDatabaseModel extends SQLiteOpenHelper {
 
     }
 
-    public int addGuess(SQLiteDatabase db, HashMap<String, String> params){
+    public void addGuess(Integer puzzleid, Integer wordid) {
 
-        String puzzleid = "puzzleid";
-        String wordid = "wordid";
+        SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(puzzleid, params.get(puzzleid));
-        values.put(wordid, params.get(wordid));
+        values.put(context.getString(R.string.sql_field_puzzleid), puzzleid);
+        values.put(context.getString(R.string.sql_field_wordid), wordid);
 
+        db.insert(context.getString(R.string.sql_table_guesses), null, values);
 
-        int key = (int)db.insert(context.getString(R.string.sql_table_guesses), null, values);
-        return key;
     }
 
     public int addWord(SQLiteDatabase db, HashMap<String, String> params) {

@@ -98,7 +98,6 @@ public class Puzzle {
     public Word guess(Integer num, String guess) {
 
         Word result = null;
-        Word word = null;
 
         /* create keys for across/down word(s) at specified box number */
 
@@ -107,24 +106,40 @@ public class Puzzle {
 
         /* get word(s) from collection (will return null for non-existent words!) */
 
-        try{
-            word = words.get(num);
-
-        } catch(Exception e){ e.printStackTrace();}
-
+        Word across = words.get(acrossKey);
+        Word down = words.get(downKey);
 
         /* compare guess to word(s); if it matches, and if it has not already been solved, assign word to "result" and call "addWordToGrid()" */
 
-            if (guess.equals(word)) {
-                result.getWord(word);
-                addWordToGrid(guess);
+        if (across != null) {
+            if (across.getWord().equals(guess)) {
+                result = across;
+                addWordToGrid(acrossKey);
             }
+        }
+
+        else if (down != null) {
+            if (down.getWord().equals(guess)) {
+                result = down;
+                addWordToGrid(downKey);
+            }
+        }
 
         /* check if any blank cells remain in "letters"; if not, the puzzle is solved, so set "solved" to true */
 
-            if (letters.equals(null)){
-                solved = true;
+        solved = true;
+
+        for (int i = 0; i < height; ++i) {
+
+            for (int j = 0; j < width; ++j) {
+
+                if (letters[i][j] == BLANK_CHAR) {
+                    solved = false;
+                }
+
             }
+
+        }
 
         /* return reference to guessed word (so it can be added to the database) */
 
@@ -140,16 +155,24 @@ public class Puzzle {
 
         guessed.add(key);
 
-        /* get word properties and add letters to "leters" array */
+        /* get word properties and add letters to "letters" array */
 
         int row = w.getRow();
         int column = w.getColumn();
         int length = w.getWord().length();
 
+        String word = w.getWord();
+
+        numbers[row][column] = w.getWord();
+        // add for loop
         for (int i = 0; i < length; ++i) {
 
-            letters[row][column] = key;
+            letters[row][column] = word;
 
+            if (direction.isAcross())
+                column++;
+            else if (word.isDown())
+                row++;
 
         }
 
