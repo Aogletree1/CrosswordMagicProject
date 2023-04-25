@@ -91,7 +91,7 @@ public class Puzzle {
 
         /* add word to grid (for development only!) */
 
-        addWordToGrid(key);
+        //addWordToGrid(key);
 
     }
 
@@ -161,17 +161,21 @@ public class Puzzle {
         int column = w.getColumn();
         int length = w.getWord().length();
 
-        String word = w.getWord();
 
-        numbers[row][column] = w.getWord();
+
+
         // add for loop
+        numbers[row][column] = w.getBox();
+
+        /* clear letter boxes */
+
         for (int i = 0; i < length; ++i) {
 
-            letters[row][column] = word;
+            letters[row][column] = w.getWord().charAt(i);
 
-            if (direction.isAcross())
+            if (w.isAcross())
                 column++;
-            else if (word.isDown())
+            else if (w.isDown())
                 row++;
 
         }
